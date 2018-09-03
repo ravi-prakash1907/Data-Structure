@@ -232,41 +232,6 @@ void list<T>::delNodeFromPos(T pos)
   else
     cout<<"\nList is empty!!";
 
-
-			/*
-  if(head != '\0')
-  {
-    node<T> *temp;
-    int c;
-
-    if(pos == 1)
-    {
-      delFromHead();
-      return;
-    }
-    else
-    temp = head;
-    c = 1;
-
-    do
-    {
-      if(c+1 == pos)
-      {
-	temp->next = temp->next->next;
-	return;
-      }
-      temp=temp->next;
-      c++;
-
-    }while(temp==head);
-
-    if(temp == head)
-      cout<<"Invalid position !";
-  }
-  else
-    cout<<"\nList is empty!!";
-
-    */
 }
 
 
