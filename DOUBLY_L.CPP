@@ -2,6 +2,7 @@
 
 #include<iostream.h>
 #include<conio.h>
+#include<stdio.h>
 
 //		NODE		//
 
@@ -12,7 +13,7 @@ template <class T> class node
 	node<T> *next;
 	node<T> *prev;
 
-    node(T data, node<T> *ptr1 = '\0', node<T> *ptr2 = '\0')
+    node(T data, node<T> *ptr1 = NULL, node<T> *ptr2 = NULL)
 	{
 	  info = data;
 	  prev = ptr1;
@@ -28,17 +29,15 @@ template <class T> class list
   public:
 	list()
 	{
-	  head = '\0';
-	  tail = '\0';
+	  head = NULL;
+	  tail = NULL;
 	}
 
 	void addToHead(T);
 	void addToTail(T);
 	void delFromHead();
 	void delFromTail();
-	void addNodeAfter(T, T);
 	void addNodeAtPos(T, T);
-	void delNodeAfter(T);
 	int search(T val);
 	void delNodeFromPos(T);
 	void reverse();
@@ -52,9 +51,17 @@ template <class T> class list
 template <class T>
 void list<T>::addToHead(T val)
 {
-  head = new node<T>(val, '\0', head);
-  if(tail == '\0')
-    tail = head;
+  node<T> *temp;
+  if(head != NULL)
+  {
+    temp = head;
+    head = new node<T>(val, NULL, head);
+    temp->prev = head;
+    if(tail == NULL)
+      tail = head;
+  }
+  else
+    head = tail = new node<T>(val);
 }
 
 /////////////////////////////////////////  DONE
@@ -62,7 +69,7 @@ void list<T>::addToHead(T val)
 template <class T>
 void list<T>::addToTail(T val)
 {
-  if(head != '\0')
+  if(head != NULL)
   {
     tail->next = new node<T>(val, tail);
     tail = tail->next;
@@ -76,16 +83,16 @@ void list<T>::addToTail(T val)
 template <class T>
 void list<T>::delFromHead()
 {
-  if(head != '\0')
+  if(head != NULL)
   {
 	node<T> *temp = head;
 	cout<<"\nDeleting: "<<temp->info;
 	if(head == tail)
-	  head = tail = '\0';
+	  head = tail = NULL;
 	else
 	{
 	  head = head->next;
-	  head->prev = '\0';
+	  head->prev = NULL;
 	}
 	cout<<"\nDeleted!!";
 	delete temp;
@@ -99,16 +106,20 @@ void list<T>::delFromHead()
 template <class T>
 void list<T>::delFromTail()
 {
-  if(head != '\0')
+  if(head != NULL)
   {
     if(head == tail)
-      head = tail = '\0';
+    {
+      node<T> *temp;
+      cout<<"\nDeleting: "<<tail->info;
+      head = tail = NULL;
+    }
     else
     {
       node<T> *temp;
       cout<<"\nDeleting: "<<tail->info;
       tail = tail->prev;
-      tail->next = '\0';
+      tail->next = NULL;
     }
 
     cout<<"\nDeleted!!";
@@ -122,7 +133,7 @@ void list<T>::delFromTail()
 template <class T>
 void list<T>::addNodeAtPos(T pos, T val)
 {
-  if((head != '\0')||(pos == 1))
+  if((head != NULL)||(pos == 1))
   {
     node<T> *temp;
     int c;
@@ -133,7 +144,7 @@ void list<T>::addNodeAtPos(T pos, T val)
       return;
     }
     else
-    for(temp = head,c = 1; temp!='\0'; temp=temp->next,c++)
+    for(temp = head,c = 1; temp!=NULL; temp=temp->next,c++)
       if(c+1 == pos)
       {
 	temp->next = new node<T>(val, temp, temp->next);
@@ -141,7 +152,7 @@ void list<T>::addNodeAtPos(T pos, T val)
 	  temp->next->next->prev = temp->next;
 	return;
       }
-    if(temp == '\0')
+    if(temp == NULL)
       cout<<"Invalid position !";
   }
   else
@@ -153,7 +164,7 @@ void list<T>::addNodeAtPos(T pos, T val)
 template <class T>
 void list<T>::delNodeFromPos(T pos)
 {
-  if((head != '\0')||(pos == 1))
+  if((head != NULL)||(pos == 1))
   {
     node<T> *temp1, *temp2;
     int c;
@@ -164,7 +175,7 @@ void list<T>::delNodeFromPos(T pos)
       return;
     }
     else
-    for(temp1 = head, temp2 = temp1->next, c = 1; temp2!='\0'; temp1=temp1->next, temp2=temp2->next, c++)
+    for(temp1 = head, temp2 = temp1->next, c = 1; temp2!=NULL; temp1=temp1->next, temp2=temp2->next, c++)
       if(c+1 == pos)
       {
 	temp2->next->prev = temp1;
@@ -172,7 +183,7 @@ void list<T>::delNodeFromPos(T pos)
 	cout<<"\nDeleted!";
 	return;
       }
-    if(temp2 == '\0')
+    if(temp2 == NULL)
       cout<<"Invalid position !";
   }
   else
@@ -187,7 +198,7 @@ int list<T>::search(T val)
 {
   node<T> *temp;
   int i;
-  for(temp = head, i = 1; temp!='\0'; temp=temp->next, i++)
+  for(temp = head, i = 1; temp!=NULL; temp=temp->next, i++)
 	if(temp->info == val)
 	  return i;
   return -1;
@@ -198,23 +209,32 @@ int list<T>::search(T val)
 template <class T>
 void list<T>::reverse()
 {
-  if(head != '\0')
+  if(head != NULL)
   {
-    node<T> *temp, *head2 = tail, *tempSec;  //earlier
+    node<T> *i, *temp, *head2 = tail, *tempSec;  //earlier
 
     if(head != tail)
     {
       test:
-	for(tempSec = head, temp=head->next; temp->next!='\0'&&tempSec->next != tail; temp=temp->next, tempSec=tempSec->next);
+	for(tempSec = head, temp=head->next; temp->next!=NULL&&tempSec->next != tail; temp=temp->next, tempSec=tempSec->next);
 	{
 	  temp->next=tempSec;
-	  tempSec->next='\0';
+	  tempSec->next=NULL;
+	  temp->prev= (head2==temp) ? NULL : i;
 	  tail=tempSec;
+
+	  i=temp;
+
+
 	  if(head!=tail)
 	    goto test;
 	  else
+	  {
+	    tail->prev=i;
 	    head = head2;
+	  }
 	}
+	cout<<"\nList reversed.";
     }
     else
     {
@@ -230,16 +250,25 @@ void list<T>::reverse()
 template <class T>
 void list<T>::displayList()
 {
-  if(head != '\0')
+  if(head != NULL)
   {
 	cout<<"\nList is:- \n";
 
 	cout<<"NULL  <->  ";
-	for(node<T> *temp = head; temp!='\0'; temp=temp->next)
+	for(node<T> *temp = head; temp!=NULL; temp=temp->next)
 	{
 	    cout<<temp->info<<"  <->  ";
 	}
 	cout<<"NULL";
+	  
+	/*	TO DEPICT THE USE OF PREVIOUS & NEXT POINTERS
+
+	for(node<T> *temp = head; temp!=NULL; temp=temp->next)
+	{
+	    cout<<endl<<temp->info<<"  |\tPre: "<<temp->prev->info<<",\tNext: "<<temp->next->info;
+	}
+
+	*/
   }
   else
 	cout<<"\nList Underflow!!";
