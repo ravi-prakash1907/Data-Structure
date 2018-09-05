@@ -1,4 +1,4 @@
-/////////////////		SINGLY LINKED LIST	     /////////////////
+/////////////////		DOUBLY LINKED LIST	     /////////////////
 
 #include<iostream.h>
 #include<conio.h>
