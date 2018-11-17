@@ -1,4 +1,4 @@
-// Header Files section
+// Queue - Using circular array
 #include<iostream.h>
 #include<conio.h>
 
