@@ -1,113 +1,148 @@
 #include<iostream.h>
-#include <conio.h>
-#define max 10
-class mystack
+#include<conio.h>
+
+#define MAX 20
+class  stack
 {
-	int st[max];
-	int st2[max];
-	int top;
-	public:
-		mystack()
-		{
-			top=-1;
-		}
+	int top, rear, arr[MAX], size;
 
-	void push()
-	{
-		int x;
-		cout<<"enter element x\n";
-		cin>>x;
-		if(top==max-1)
-		{
-			cout<<"can't insert\n";
-		}
-		else
-		{
-			top++;
-			st[top]=x;
-		}
-	}
+public:
+	 stack(int s=MAX)
+	 {
+	 	size = s;
+	 	top = rear = -1;
+	 }
 
-	int pop()
-	{
-		int t;
-		if(top==-1)
-		{
-			cout<<"stack is empty\n";
-			return 0;
-		}
-		else
-		{
-			t=st[top];
-			top--;
-			return t;
-		}
-	}
+	 int sizeCurr()
+	 {
+	   return (top+1);
+	 }
 
-	void clear()
-	{
-		while(top!=-1)
-		{
-			pop();
-		}
-		cout<<"empty stack\n";
-	}
+	 void push(int);
+	 int pop();
+	 void display();
 
-	void display()
-	{
-		cout<<"Stack is:"<<endl;
-		for(int i=0;i<=top;i++)	{
-			cout<<st[i]<<" ";
-		}
-	}
-	void reverse()
-	{
-		int toptop=top;
-		for(int i=0;i<=toptop;i++)
-		{
-			st2[i]=pop();
-		}
-		cout<<"reversed stack: "<<endl;
-		for(i=0;i<=toptop;i++)
-		{
-			cout<<st2[i]<<" ";
-		}
-	}
 };
-int main()
+
+void stack::push(int x)
 {
 	clrscr();
-	char ch;
-	int choice;
-	mystack s1;
-		cout<<endl<<"Operations on stack"<<endl<<endl;
-		cout<<"1.pushing a element\n";
-		cout<<"2.popping the element\n";
-		cout<<"3.clear the stack\n";
-		cout<<"4.reverse stack\n";
-		do{
-		cout<<"enter the choice: ";
-		cin>>choice;
-		switch(choice)
-		{	case 1:
-			s1.push();
-			s1.display();
-			break;
-			case 2:
-			s1.pop();
-			break;
-			case 3:
-			s1.clear();
-			s1.display();
-			break;
-			case 4:
-			s1.reverse();
-			break;
-			default:
-			cout<<"wrong choice";
-		}
-		cout<<"\ndo you want to enter more operations\n";
-		cin>>ch;
-	}while(ch=='y'||ch=='Y');
-return 0;
+	if(top == size-1)
+	{
+		cout<<"\nStack Overflow!";
+		getch();
+		return;
+	}
+	else
+	{
+		arr[++top] = x;
+		//cout<<"\nInserted "<<arr[top]<<endl;
+		//getch();
+	}
+}
+
+int stack::pop()
+{
+  int x;
+	clrscr();
+	if(top == -1)
+	{
+		cout<<"\nStack Underflow!";
+		getch();
+		return -1;
+	}
+	else
+	{
+		x = arr[top--];
+		return x;
+	}
+}
+
+void stack::display()
+{
+	clrscr();
+	if(top == -1)
+	{
+		cout<<"\nStack Underflow!";
+		getch();
+		return;
+	}
+	else
+	{
+		cout<<"\n\nStack is: \n\n";
+		for(int i=0; i<=top; i++)
+			cout<<arr[i]<<"   ";
+		cout<<"\t <- TOP";
+	}
+	getch();
+}
+
+///////////////////////////////////////////////
+
+void reverse(stack &S, int n)
+{
+  clrscr();
+    int i, j;
+    stack S1(n);
+    stack S2(n);
+     for(i=0; i<n; i++)
+       S1.push(S.pop());
+
+     for(i=0; i<n; i++)
+       S2.push(S1.pop());
+
+     for(i=0; i<n; i++)
+       S.push(S2.pop());
+
+	cout<<"Reversed!!";
+	getch();
+};
+
+///////////////////////////////////////////////
+
+void main()
+{
+   int i, j, size, data, choice;
+   char c;
+
+//   here:
+   clrscr();
+    cout<<"\nEnter the size of stack: ";
+    cin>>size;
+
+    stack S(size);
+      here:
+	clrscr();
+	  cout<<"\nMENU:- \n"
+	      <<"\n1) Push"
+	      <<"\n2) Reverse"
+	      <<"\n3) Display\n\n";
+	  cin>>choice;
+	switch(choice)
+	{
+		case 1:  clrscr();
+				 cout<<"\nEnter data: ";
+				 cin>>data;
+				 S.push(data);
+				 break;
+
+		case 2:  clrscr();
+				 reverse(S, S.sizeCurr());
+				 break;
+
+		case 3:  clrscr();
+				 S.display();
+				 break;
+
+		default: "\nInvalid input!!";
+	}
+
+
+	clrscr();
+		cout<<"\nWanna try again?(Y/N)";
+		cin>>c;
+
+		if(c=='y' || c=='Y')
+			goto here;
+
 }
