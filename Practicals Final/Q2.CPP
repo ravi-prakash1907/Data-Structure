@@ -1,5 +1,3 @@
-/*	   WAP to implement Linear Search using templates	   */
-
 #include<iostream.h>
 #include<conio.h>
 
