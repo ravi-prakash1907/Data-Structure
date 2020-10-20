@@ -48,4 +48,3 @@
 22. WAP to create a Threaded Binary Tree as per inorder traversal, and implement operations like finding the successor / predecessor of an element, insert an element, inorder traversal.  
 23. WAP to implement various operations on AVL Tree.  
 
-#### by Ravi Prakash ( https://linktr.ee/ravi_prakash1907 )
